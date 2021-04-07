@@ -7,5 +7,19 @@
     </head>
     <body>
         <h1>ToDoリスト</h1>
+        <input type="radio" name="status" value="all" checked>すべて
+        <input type="radio" name="status" value="in-progress">作業中
+        <input type="radio" name="status" value="done">完了
+
+        <table id="task-table">
+            <tr>
+                <th>ID</th>
+                <th>コメント</th>
+                <th>状態</th>
+            </tr>
+        </table>
+        <h2>新規タスクの追加</h2>
+        <input type="text" id="task">
+        <button id="btn_add">追加</button>
     </body>
 </html>
