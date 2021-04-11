@@ -1,13 +1,13 @@
-let taskList = [];
+const taskList = [];
 
 document.addEventListener('DOMContentLoaded', () => {
 
     //追加ボタン押下時
     document.getElementById('btn_add').addEventListener('click', () => {
         
-        let inputContent = document.getElementById('content').value;
+        const inputContent = document.getElementById('content').value;
 
-        let addedListNum = addTask(inputContent);
+        const addedListNum = addTask(inputContent);
         if (addedListNum === -1) {
             return;
         }
@@ -48,23 +48,47 @@ function showTask(addedListNum) {
 
     //状態ボタンの作成とHTML作成
     const tdStatusElement = document.createElement('td');
-    tdStatusElement.appendChild(showStatusButton(addedListNum));
+    tdStatusElement.appendChild(showButton('status', taskList[addedListNum].status));
     trElement.appendChild(tdStatusElement);
 
     //削除ボタンの作成とHTML作成
-    trElement.appendChild(showDeleteButton(addedListNum));
+    trElement.appendChild(showButton('delete', '削除'));
 
     parentNode.appendChild(trElement);
 }
 
-function showStatusButton(addedListNum) {
-    const btnProgressElement = document.createElement('button');
-    btnProgressElement.textContent = taskList[addedListNum].status;
-    return btnProgressElement;
+function showButton(btnType, btnLabel) {
+    const btnElement = document.createElement('button');
+    btnElement.textContent = btnLabel;
+    if (btnType === 'status') {
+        //状態ボタン押下時
+    } else if (btnType === 'delete') {
+        //駆除ボタン押下時
+        btnElement.addEventListener('click', () => {
+            deleteTask(btnElement);
+        });
+    }
+    return btnElement;
 }
 
-function showDeleteButton() {
-    const btnDeleteElement = document.createElement('button');
-    btnDeleteElement.textContent = '削除';
-    return btnDeleteElement;
+function deleteTask(btnElement) {
+    const btnDeleteElements = document.getElementsByClassName('delete');
+
+    //押下した削除ボタンがどのToDoタスクのものか検索
+    let taskID = 0;
+    for (taskID = 0; taskID < btnDeleteElements.length; taskID++) {
+        if (btnDeleteElements[taskID] === btnElement) {
+            console.log('found'); 
+            break;
+        }
+    }
+
+    taskList.splice(taskID, 1);
+    btnElement.parentNode.remove();
+
+    //タスクIDの振り直し
+    const trElements = document.getElementsByTagName('tr');
+    for (let i = taskID + 1; i < trElements.length; i++){
+        trElements[i].firstElementChild.textContent = i - 1;
+    }
 }
