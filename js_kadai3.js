@@ -48,18 +48,23 @@ function showTask(addedListNum) {
 
     //状態ボタンの作成とHTML作成
     const tdStatusElement = document.createElement('td');
-    tdStatusElement.appendChild(showButton('status', taskList[addedListNum].status));
+    tdStatusElement.appendChild(showButton(taskList[addedListNum].status, addedListNum, changeStatus));
     trElement.appendChild(tdStatusElement);
 
     //削除ボタンの作成とHTML作成
-    trElement.appendChild(showButton('delete', '削除'));
+    trElement.appendChild(showButton('削除', addedListNum, deleteTask));
 
     parentNode.appendChild(trElement);
 }
 
-function showButton(btnType, btnLabel) {
+function showButton(btnLabel, addedListNum, clickFunction) {
     const btnElement = document.createElement('button');
     btnElement.textContent = btnLabel;
+
+    btnElement.addEventListener('click', () => {
+        clickFunction(btnElement, addedListNum);
+    });
+    /*
     if (btnType === 'status') {
         //状態ボタン押下時
     } else if (btnType === 'delete') {
@@ -68,10 +73,12 @@ function showButton(btnType, btnLabel) {
             deleteTask(btnElement);
         });
     }
+    */
     return btnElement;
 }
 
-function deleteTask(btnElement) {
+function deleteTask(btnElement, taskID) {
+    /*
     const btnDeleteElements = document.getElementsByClassName('delete');
 
     //押下した削除ボタンがどのToDoタスクのものか検索
@@ -82,7 +89,7 @@ function deleteTask(btnElement) {
             break;
         }
     }
-
+    */
     taskList.splice(taskID, 1);
     btnElement.parentNode.remove();
 
@@ -91,4 +98,9 @@ function deleteTask(btnElement) {
     for (let i = taskID + 1; i < trElements.length; i++){
         trElements[i].firstElementChild.textContent = i - 1;
     }
+}
+
+function changeStatus() {
+    //状態変更
+    console.log('change status');
 }
