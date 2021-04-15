@@ -62,12 +62,12 @@ function showButton(btnLabel, taskId, clickFunction) {
     btnElement.textContent = btnLabel;
 
     btnElement.addEventListener('click', () => {
-        clickFunction(taskId);
+        clickFunction(btnElement, taskId);
     });
     return btnElement;
 }
 
-function deleteTask(taskId) {
+function deleteTask(btnElement, taskId) {
     const parentNode = document.getElementById('task-table');
 
     for (let i = taskId; i < taskList.length; i++) {
@@ -80,7 +80,13 @@ function deleteTask(taskId) {
     }
 }
 
-function changeStatus() {
-    //状態変更
-    console.log('change status');
+function changeStatus(btnElement, taskId) {
+    const currectStatus = taskList[taskId].status;
+    if (currectStatus === '作業中') {
+        taskList[taskId].status = '完了';
+        btnElement.textContent = '完了';
+    } else {
+        taskList[taskId].status = '作業中';
+        btnElement.textContent = '作業中';
+    }
 }
